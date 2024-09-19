@@ -4,5 +4,13 @@
         "source": "/blog/(.*)",
         "destination": "/$1"
       }
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/blog/",
+        "permanent": true
+      }
     ]
   }
+
