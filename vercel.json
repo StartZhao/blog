@@ -1,8 +1,10 @@
 {
-    "rewrites": [
+    
+    "redirects": [
       {
-        "source": "/blog/(.*)",
-        "destination": "/$1"
+        "source": "/",
+        "destination": "/blog/",
+        "permanent": true
       }
     ]
   }
