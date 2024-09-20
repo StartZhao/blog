@@ -6,11 +6,12 @@ import { blogTheme } from './blog-theme'
 // 如果使用 GitHub/Gitee Pages 等公共平台部署
 // 通常需要修改 base 路径，通常为“/仓库名/”
 // 如果项目名已经为 name.github.io 域名，则不需要修改！
-const base = process.env.GITHUB_ACTIONS === 'true'
-  ? '/blog/'
-  : '/'
+// const base = process.env.GITHUB_ACTIONS === 'true'
+//   ? '/blog/'
+//   : '/'
 // 使用 VITE_BASE_URL 环境变量，GitHub Pages,不支持.env变量
 // const base = process.env.VITE_BASE_URL || '/'
+const base = '/'
 // Vitepress 默认配置
 // 详见文档：https://vitepress.dev/reference/site-config
 export default defineConfig({
