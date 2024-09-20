@@ -25,7 +25,12 @@ const blogTheme = getThemeConfig({
     mobileDisplay: true,
     models: [
       {
-        path: 'https://registry.npmmirror.com/oml2d-models/latest/files/models/Senko_Normals/senko.model3.json'
+        "path": "https://model.oml2d.com/HK416-1-normal/model.json",
+        "position": [0, 60],
+        "scale": 0.08,
+        "stageStyle": {
+          "height": 450
+        }
       }
     ]
   },

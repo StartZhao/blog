@@ -11,6 +11,7 @@ import { blogTheme } from './blog-theme'
 //   : '/'
 // 使用 VITE_BASE_URL 环境变量，GitHub Pages,不支持.env变量
 // const base = process.env.VITE_BASE_URL || '/'
+// 已改项目为根配置域名
 const base = '/'
 // Vitepress 默认配置
 // 详见文档：https://vitepress.dev/reference/site-config
