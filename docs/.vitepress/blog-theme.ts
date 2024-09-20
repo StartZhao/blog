@@ -25,7 +25,7 @@ const blogTheme = getThemeConfig({
     mobileDisplay: true,
     models: [
       {
-        path: 'https://oml2d-models.sugarat.top/Senko_Normals/motions/Idle.motion3.json'
+        path: 'https://registry.npmmirror.com/oml2d-models/latest/files/models/Senko_Normals/senko.model3.json'
       }
     ]
   },
