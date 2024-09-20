@@ -7,9 +7,9 @@ import { blogTheme } from './blog-theme'
 // 通常需要修改 base 路径，通常为“/仓库名/”
 // 如果项目名已经为 name.github.io 域名，则不需要修改！
 // const base = process.env.GITHUB_ACTIONS === 'true'
-//   ? '/vitepress-blog-sugar-template/'
+//   ? '/blog/'
 //   : '/'
-const base = process.env.VITE_BASE_URL || '/'
+const base = import.meta.env.VITE_BASE_URL || '/'
 // Vitepress 默认配置
 // 详见文档：https://vitepress.dev/reference/site-config
 export default defineConfig({
