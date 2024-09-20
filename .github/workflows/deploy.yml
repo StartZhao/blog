@@ -4,8 +4,16 @@ name: Deploy Pages
 on:
   push:
     branches: [main]
+    # 忽略 README.md 和 LICENSE 文件的更改
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
   pull_request:
     branches: [main]
+    # 忽略 README.md 和 LICENSE 文件的更改
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
 
   # 支持手动在工作流上触发
   workflow_dispatch:
@@ -53,6 +61,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+
+      # 缓存 PNPM store 和 node_modules
+      - name: Cache PNPM store
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       # 使用 最新的 PNPM
       # 你也可以指定为具体的版本
