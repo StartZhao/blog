@@ -55,21 +55,21 @@ setup() 是 Vue 3 中 Composition API 的核心部分，用于在组件实例被
 
 `setup()` 必须返回一个对象，该对象中的属性和方法会被暴露给组件的模板中使用。
 
-### （二）<script setup lang="ts">
+### （二）`<script setup lang="ts">`
 
-<script setup lang="ts"> 是 Vue 3 中的一种简化写法，用于使用 Composition API。它与传统的 setup() 方法有几个重要的区别：
+`<script setup lang="ts">` 是 Vue 3 中的一种简化写法，用于使用 Composition API。它与传统的 setup() 方法有几个重要的区别：
 
 1. 简化语法
 
-<script setup> 省略了 export default 和 setup() 函数的定义，使代码更简洁。
+`<script setup>` 省略了 export default 和 setup() 函数的定义，使代码更简洁。
 
 2. 自动响应式
 
 
-在 <script setup> 中，定义的变量（如使用 ref 或 reactive）会自动被 Vue 处理为响应式，无需手动返回。
+在 `<script setup>` 中，定义的变量（如使用 ref 或 reactive）会自动被 Vue 处理为响应式，无需手动返回。
 3. 更好的类型推导
 
-使用 TypeScript 时，<script setup lang="ts"> 提供了更好的类型推导和类型检查，减少了冗余的类型声明。
+使用 TypeScript 时，`<script setup lang="ts">` 提供了更好的类型推导和类型检查，减少了冗余的类型声明。
 4. 使用组合函数
 
 可以直接使用组合函数和其他 Composition API 特性，而不需要在 setup() 中进行额外的声明。
@@ -126,13 +126,13 @@ Composition API 和 Options API 是 Vue.js 中两种不同的组件定义方式�
 
 eslint、prettier
 
-（九）小细节
+### （九）小细节
 
 具名导入导出与默认导入导出区别
 
 节流消抖
 
-（十）Vue插件
+### （十）Vue插件
 
 unplugin-auto-import
 
