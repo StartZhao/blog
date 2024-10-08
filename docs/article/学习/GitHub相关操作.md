@@ -49,3 +49,66 @@ du -sh .
 1. 删除文件或文件夹，`git rm -r --cached path/to/file`，`git commit -m "提交信息"`
 2. 清理文件历史记录，`git filter-repo --path path/to/file --invert-paths`
 3. 推送清理后的仓库，`git push --force --all`
+
+## 三、分支相关操作
+
+强制推送本地到远程仓库，对远程仓库内容直接进行覆盖
+
+```git
+git push --force origin main
+```
+
+修改本地分支名
+
+```git
+git branch -m old-branch-name new-branch-name
+```
+
+设置分支与远程仓库同分支名同步
+
+```git
+git push --set-upstream origin branch-name
+```
+
+查看当前工作目录和暂存区的状态
+
+```git
+git status
+```
+
+合并分支
+
+```git
+git merge feature-branch --allow-unrelated-histories
+```
+
+删除分支
+
+```git
+git branch -d feature-branch
+```
+
+查看所有分支
+
+```git
+git branch -a
+```
+
+查看远程分支
+
+```git
+git branch -r
+```
+
+更新本地的远程跟踪分支，获取最新的更改，但不会影响当前工作目录或本地分支
+
+```git
+git fetch origin
+```
+
+创建本地分支，并切换到该分支
+
+```git
+git checkout -b feature-branch
+```
+
