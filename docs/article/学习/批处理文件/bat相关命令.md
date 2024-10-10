@@ -1,8 +1,13 @@
+---
+tag:
+ - 批处理文件
+---
+
 # bat 相关命令
 
 ```bash
 rem 关闭命令回显
-@echo off 
+@echo off
 rem 确定解码格式为 utf-8, >nul 标准输出重定向到 nul, 2>&1 标准错误重定向到标准输出
 chcp 65001 >nul
 rem 允许在同一块代码中使用 ! 来引用变量
