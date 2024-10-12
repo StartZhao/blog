@@ -43,6 +43,12 @@ const blogTheme = getThemeConfig({
     ]
   },
 
+  // 文章全局设置
+  article: {
+    // 是否显示封面
+    hiddenCover: false,
+  },
+
   // 文章日期格式化
   formatShowDate(date) {
     return new Date(date).toLocaleString()
@@ -68,7 +74,6 @@ const blogTheme = getThemeConfig({
   // mermaid: true
 
   // 页脚
-  // footer: {
   footer: [ {
     copyright: "菜旺学习 2024 - " + new Date().getFullYear(),
     version: false
