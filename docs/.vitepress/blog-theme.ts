@@ -45,8 +45,8 @@ const blogTheme = getThemeConfig({
 
   // 文章全局设置
   article: {
-    // 是否显示封面
-    hiddenCover: false,
+    // 是否隐藏封面
+    hiddenCover: true,
   },
 
   // 文章日期格式化

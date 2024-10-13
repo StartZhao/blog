@@ -47,7 +47,7 @@ UNIX 系统下，IO 模型一共有 5 种：**同步阻塞 I/O、同步非阻塞
 
 ### NIO（Non-blocking/New I/O）
 
-Java 中的 NIO 于 Java 1.4 中引入，对应 `java.nio` 包，提供了 `Channel`，`Selector`，`Buffer` 等抽象。NIO 中 N 可以理解为 Non-blocking，不单纯是 New。它支持面向缓存的，基于通道的 I/O 操作方法。对于高负载、高并发的（网络）应用，应使用 NIO。
+Java 中的 NIO 于 JDK 1.4 中引入，对应 `java.nio` 包，提供了 `Channel`，`Selector`，`Buffer` 等抽象。NIO 中 N 可以理解为 Non-blocking，不单纯是 New。它支持面向缓存的，基于通道的 I/O 操作方法。对于高负载、高并发的（网络）应用，应使用 NIO。
 
 Java 中的 NIO 可以看作 **I/O 多路复用模型**。也有很多人认为，Java中的 NIO 属于同步非阻塞 IO 模型。
 
@@ -80,7 +80,7 @@ Java 中的 NIO，有一个非常重要的概念——选择器（Selector），
 
 ### AIO（Asynchronous I/O）
 
-AIO 也就是 NIO 2。Jdk 7 引入了 NIO 的改进版 NIO 2，它是异步 I/O 模型。
+AIO 也就是 NIO 2。JDK 7 引入了 NIO 的改进版 NIO 2，它是异步 I/O 模型。
 
 **异步 I/O 模型**
 

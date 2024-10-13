@@ -88,8 +88,6 @@ String s = new String("Hydra");
 >
 > 就 HotSpot VM 的实现来说，加载类时字符串字面量会进入到运行时常量池，不会进入全局的字符串常量池，即在 StringTable 中并没有相应的引用，在堆中也没有对应的对象产生。
 
-![1718866859647](images/1718866859647.png)
-
 # 4.intern
 
 String 的intern()是一个本地方法，可以强制将 String 驻留进入字符串常量池，可以分为两种情况：
