@@ -23,36 +23,29 @@ docker run \
 
 ## 2 修改配置
 
+**修改gitlab.rb**
+
+可以在宿主机的/home/gitlab/etc目录下找到该文件。可以先拉到本地进行修改，再上传，这样保证修改顺利。
+
 ```bash
-#进容器内部
-docker exec -it gitlab /bin/bash
-
-#修改gitlab.rb
-vi /etc/gitlab/gitlab.rb
-
 #加入如下
 #gitlab访问地址，可以写域名。如果端口不写的话默认为80端口
-external_url 'http://虚拟机IP地址'
+external_url 'http://虚拟机IP地址:端口'
 #ssh主机ip
 gitlab_rails['gitlab_ssh_host'] = '虚拟机IP地址'
 #ssh连接端口
 gitlab_rails['gitlab_shell_ssh_port'] = 9922
+# nginx监听端口
+nginx['listen_port'] = 80
+```
 
+生效配置文件
+
+```bash
+#进容器内部
+docker exec -it gitlab /bin/bash
 # 让配置生效
 gitlab-ctl reconfigure
-```
-
-```bash
-# 修改http和ssh配置
-vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml
-
-  gitlab:
-    host: 虚拟机IP地址
-    port: 9980 # 这里改为9980
-    https: false
-```
-
-```bash
 #重启gitlab
 gitlab-ctl restart
 #退出容器
@@ -84,6 +77,45 @@ user.password='******'
 user.save!
 # 退出
 exit
+```
 
+## 5 bug
+
+### 5.1 配置 gitlab.rb 出现问题
+
+```bash
+vi /etc/gitlab/gitlab.rb
+```
+
+直接在容器执行上述命令，可能会太卡导致修改配置文件出现问题。然后导致GitLab一直跑不起来。
+
+### 5.2 修改http和ssh配置 出现问题
+
+```bash
+# 修改http和ssh配置
+vi /opt/gitlab/embedded/service/gitlab-rails/config/gitlab.yml
+
+  gitlab:
+    host: 虚拟机IP地址
+    port: 9980 # 这里改为9980
+    https: false
+```
+
+由于上述操作，在虚拟机重启后会丢失。我就想持久化。
+
+将 gitlab.rb 进行如下配置
+
+```bash
+external_url 'http://虚拟机IP地址:端口'
+```
+
+然后出现无法正常访问页面
+
+最后排查，发现是由于进行上述配置之后 nginx 的监听端口发生了变化。
+
+所以需要将 nginx 的监听端口固定下来。
+
+```bash
+nginx['listen_port'] = 80
 ```
 
