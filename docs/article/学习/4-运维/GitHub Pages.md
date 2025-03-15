@@ -1,7 +1,7 @@
 ---
 tag:
- - 开发工具
- - GitHub
+ - 运维
+ - CICD
 ---
 
 # GitHub Pages

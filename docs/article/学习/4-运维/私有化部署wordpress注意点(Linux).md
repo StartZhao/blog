@@ -1,3 +1,8 @@
+---
+tag:
+ - 运维
+---
+
 # 私有化部署wordpress注意点(Linux)
 
 ## 一、wordpress迁移

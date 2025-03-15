@@ -1,6 +1,7 @@
 ---
 tag:
-  - AI
+ - 开发工具
+ - AI
 ---
 
 # ChatBox

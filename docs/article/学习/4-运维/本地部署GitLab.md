@@ -1,3 +1,8 @@
+---
+tag:
+ - 运维
+---
+
 # 本地部署GitLab
 
 使用 docker 的方式部署 GitLab 在 Linux 服务器上
