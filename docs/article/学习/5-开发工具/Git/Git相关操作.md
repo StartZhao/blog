@@ -136,4 +136,37 @@ git push -u <远程仓库名> <本地分支名>:<远程分支名>
 git push <远程仓库名> <本地分支名>:<远程分支名>
 # 查看本地跟踪远程仓库情况
 git branch -vv
+
+# 查看当前被 Git 跟踪的文件列表
+git ls-files
+# 停止跟踪已被忽略的文件
+git rm --cached <file>
+# 批量移除，先删除所有跟踪文件，再将要跟踪文件提交至暂存区
+git rm -r --cached .
+git add .
+# 提交更改
+git commit -m "<comment>"
+
+# 不推荐在公共分支使用 git reset 或 --force 推送
+# 软回滚（保留更改）
+git reset --soft <commit-hash>
+# 混合回滚（撤销提交和暂存区）
+git reset --mixed <commit-hash>
+# 硬回滚（彻底撤销提交和更改）
+git reset --hard <commit-hash>
+# 创建新提交撤销更改
+git revert <commit-hash>
+# 查看某个提交状态
+git checkout <commit-hash>
+# 删除最近的提交
+git reset HEAD~1
+# 强制推送更新远程仓库
+git push origin <branch-name> --force
+# 撤销未提交的更改
+git checkout -- <file-path>
+# 撤销暂存区中的更改
+git reset HEAD <file-path>
+# 回滚合并
+git revert -m 1 <merge-commit-hash>
 ```
+

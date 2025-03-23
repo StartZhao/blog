@@ -109,6 +109,28 @@ chown -R 1000:1000 /home/jenkins/data
 chown -R 1000:1000 /var/run/docker.sock
 ```
 
+由于 `docker.sock` 文件是动态生成的，docker 服务重启就会导致之前的权限配置失效。
+
+有三种方法解决：
+
+①永不重启 docker 服务 
+
+② 将用户添加进 docker 组 （未尝试）
+
+```bash
+# 将用户添加进 docker 组
+usermod -aG <group-name> <user-name>
+# 在启动容器再添加如下内容作为参数
+-u <UID>:<GID>
+```
+
+③修改 /etc/systemd/system/docker.service.d/override.conf 文件，在该文件中添加以下内容
+
+```bash
+[Service]
+ExecStartPost=/bin/chown 1000:1000 /var/run/docker.sock
+```
+
 + 创建容器
 
 ```bash
@@ -146,6 +168,7 @@ docker run -p 10240:8080 -p 10241:50000 \
   + Maven Integration
   + NodeJS
   + Publish Over SSH
+  + Docker Pipeline
 
 + 系统设置如下
 
@@ -166,3 +189,134 @@ docker run -p 10240:8080 -p 10241:50000 \
 ![1742025734515](images/1742025734515.png)
 
 自此，Jenkins搭建便完成了，你可以尝试自动化构建部署项目了。
+
+## 7 Jenkinsfile 示例
+
+```groovy
+pipeline {
+    agent any
+
+    environment {
+        GIT_URL = '<git-url>'
+        BRANCH_NAME = '<branch-name>'
+        DOCKER_IMAGE = "<image-name>"
+        TARGET_PATH = "<target-directory>"
+    }
+
+    tools {
+        nodejs '<node-name>'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Checking out code from repository..."
+                git branch: "${env.BRANCH_NAME}", url: "${env.GIT_URL}"
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo "Install Dependencies..."
+                sh 'npm install'
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                echo "Build Project..."
+                // 打包项目
+                sh 'npm run build:h5-netlify:only'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo "Building Docker image..."
+                script {
+                    try {
+                        sh "docker build --cache-from ${env.DOCKER_IMAGE} -t ${env.DOCKER_IMAGE} ."
+                    } catch (Exception e) {
+                        echo "Cache image not found, building without cache..."
+                        sh "docker build -t ${env.DOCKER_IMAGE} ."
+                    }
+                }
+            }
+        }
+
+        stage('Package Image') {
+            steps {
+                echo "Saving Docker image as tar file..."
+                sh """
+                if [ -f my-app-image.tar ]; then
+                    rm -f my-app-image.tar
+                fi
+                docker save ${DOCKER_IMAGE} -o my-app-image.tar
+                """
+            }
+        }
+
+        stage('Transfer Image') {
+            steps {
+                echo "Transferring Docker image to target server..."
+                sshPublisher(
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: 'APP',
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: 'my-app-image.tar',
+                                    removePrefix: '',
+                                    remoteDirectory: '',
+                                    execCommand: """
+                                    echo "Switch to wdirectory: ${TARGET_PATH}"
+                                    cd ${TARGET_PATH}
+                                    echo "Stopping and removing existing container..."
+                                    docker inspect my-app >/dev/null 2>&1 && docker stop my-app && docker rm my-app || echo "No existing container found."
+                                    echo "Loading new image..."
+                                    docker load < my-app-image.tar && echo "Image loaded successfully." || echo "Failed to load image."
+                                    echo "Starting new container..."
+                                    docker run -d --name my-app -p 8080:80 --restart always my-app:latest && echo "Container started successfully." || echo "Failed to start container."
+                                    echo "Cleaning up temporary files..."
+                                    rm -rf my-app-image.tar
+                                    """
+                                )
+                            ],
+                            usePromotionTimestamp: false,
+                            verbose: true
+                        )
+                    ]
+                )
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Cleaning up temporary files..."
+            sh """
+            if [ -f my-app-image.tar ]; then
+                rm -f my-app-image.tar
+            fi
+            """
+
+            script {
+                echo "Checking if Docker image ${env.DOCKER_IMAGE} exists..."
+                if (sh(script: "docker images --format '{{.Repository}}:{{.Tag}}' | grep -qw '${env.DOCKER_IMAGE}'", returnStatus: true) == 0) {
+                    echo "Docker image ${env.DOCKER_IMAGE} found. Deleting it..."
+                    sh "docker rmi -f ${env.DOCKER_IMAGE}"
+                } else {
+                    echo "Docker image ${env.DOCKER_IMAGE} does not exist. No action needed."
+                }
+            }
+        }
+        success {
+            echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed!"
+        }
+    }
+}
+```
+
